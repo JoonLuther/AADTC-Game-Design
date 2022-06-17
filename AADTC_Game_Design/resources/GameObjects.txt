@@ -1,0 +1,4 @@
+//name-x-y-isAnimated
+FlowerTree1-1-0-0
+Rocks-0-1-1
+Tree1-0-0-0

@@ -1,0 +1,3 @@
+//name-x-y-isAnimated
+Star2-0-1-0
+Star1-0-0-1
