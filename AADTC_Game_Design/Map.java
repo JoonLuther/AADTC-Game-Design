@@ -20,7 +20,7 @@ public class Map {
     private int fillTileID = -1;
 
     private ArrayList<MappedTile> mappedTiles = new ArrayList<MappedTile>();
-    private ArrayList<MappedCollectible> mappedCollectibles = new ArrayList<>();
+    public ArrayList<MappedCollectible> mappedCollectibles = new ArrayList<>();
     private ArrayList<MappedGameObject> mappedGameObjects = new ArrayList<>();
 
     public ArrayList<Rectangle> collectiblelCollisionRectangles = new ArrayList<>();

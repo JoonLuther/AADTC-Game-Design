@@ -5,23 +5,28 @@ import java.awt.Graphics;
 import java.lang.Runnable;
 import java.lang.Thread;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.File;
 import java.util.ArrayList;
+import javax.swing.*;
 
 //import java.awt.*
 
 public class Game extends JFrame implements Runnable {
 
 	private Rectangle rect1, rect2;
+	JFrame f;
+	JLabel l;
 
 	public static int alpha = 0xFFFF00DC; //static can be created and accessed w out having an instance of Game
 	private Canvas canvas = new Canvas();
 	private RenderHandler renderer;
 	private int xZoom = 6;
 	private int yZoom = 6;
+	private int score = 0;
 	
 	private SpriteSheet sheet;
 	private SpriteSheet playerSheet;
@@ -94,6 +99,27 @@ public class Game extends JFrame implements Runnable {
 		player = new Player(playerSheet);
 		objects[0] = player;
 
+		// create a new frame to store text field and button
+		// f = new JFrame("label");
+		// String s = "Score: " + this.score;
+ 
+		// // create a label to display text
+		// l = new JLabel(s);
+ 
+		// // create a panel
+		// JPanel p = new JPanel();
+ 
+		// // add label to panel
+		// p.add(l);
+ 
+		// // add panel to frame
+		// f.add(p);
+ 
+		// // set the size of frame
+		// f.setSize(100, 100);
+ 
+		// f.setVisible(true);
+
 	}
 
 	public void update() {
@@ -105,6 +131,7 @@ public class Game extends JFrame implements Runnable {
 		}
 
 		currentMap.update(this);
+		updateScore(player);
 
 	}
 
@@ -141,6 +168,8 @@ public class Game extends JFrame implements Runnable {
 			}
 
 			renderer.render(graphics);
+			
+			
 
 			graphics.dispose();
 			bufferStrategy.show();
@@ -193,5 +222,12 @@ public class Game extends JFrame implements Runnable {
 
 	public MouseEventListener getMouseListener() {
 		return mouseListener;
+	}
+
+	public void updateScore(Player player) {
+		if(player.getScore() != this.score) {
+			this.score = player.getScore();
+			
+		}
 	}
 }

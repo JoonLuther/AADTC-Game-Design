@@ -7,6 +7,7 @@ public class Player implements GameObject {
     private int direction = -1;
     private boolean didMove = false;
     private boolean hadMoved = false;
+    private int score = 0;
     //private boolean hasMoved = false;
 
     public Player(SpriteSheet spriteSheet) {
@@ -33,28 +34,28 @@ public class Player implements GameObject {
             newDirection = 2;
             didMove = true;
             if(playerRectangle.y - speed > 0) {
-                if(collision(game) == false) playerRectangle.y -= speed;
+                if(collision(game) != 1) playerRectangle.y -= speed;
             }
         }
         else if(keyListener.down()) {
             newDirection = 0;
             didMove = true;
             if(playerRectangle.y + playerRectangle.h * 6 + speed < game.getMap().getYBound()) {
-                if(collision(game) == false) playerRectangle.y += speed;
+                if(collision(game) != 1) playerRectangle.y += speed;
             }
         }
         else if(keyListener.left()) {
             newDirection = 3;
             didMove = true;
             if(playerRectangle.x - speed > 0) {
-                if(collision(game) == false) playerRectangle.x -= speed;
+                if(collision(game) != 1) playerRectangle.x -= speed;
             }
         }
         else if(keyListener.right()) {
             newDirection = 1;
             didMove = true;
             if(playerRectangle.x + playerRectangle.w * 6 + speed < game.getMap().getXBound()) {
-                if(collision(game) == false) playerRectangle.x += speed;
+                if(collision(game) != 1) playerRectangle.x += speed;
             }
         }
 
@@ -79,6 +80,8 @@ public class Player implements GameObject {
         
         updateCamera(game, game.getRenderer().getCamera());
 
+        //System.out.println(score);
+
 
     }
 
@@ -96,7 +99,7 @@ public class Player implements GameObject {
         return playerRectangle;
     }
 
-    public boolean collision(Game game) {
+    public int collision(Game game) {
         Rectangle rect = new Rectangle(playerRectangle.x, playerRectangle.y, playerRectangle.w ,playerRectangle.h);
         switch(this.direction) {
             case 0: rect.y += this.speed; break;
@@ -107,15 +110,28 @@ public class Player implements GameObject {
         }
 
         for(int i = 0; i < game.getMap().collectiblelCollisionRectangles.size(); i++) {
-            if(rect.intersects(game.getMap().collectiblelCollisionRectangles.get(i))) return true;
+            if(rect.intersects(game.getMap().collectiblelCollisionRectangles.get(i))) {
+                game.getMap().mappedCollectibles.remove(i);
+                game.getMap().collectiblelCollisionRectangles.remove(i);
+                updateScore();
+                return 2;
+            }
         }
 
         for(int i = 0; i < game.getMap().gameObjCollisionRectangle.size(); i++) {
-            if(rect.intersects(game.getMap().gameObjCollisionRectangle.get(i))) return true;
+            if(rect.intersects(game.getMap().gameObjCollisionRectangle.get(i))) return 1;
         }
 
-        return false;
+        return 0;
 
+    }
+
+    public void updateScore() {
+        score++;
+    }
+
+    public int getScore() {
+        return score;
     }
 
 }
